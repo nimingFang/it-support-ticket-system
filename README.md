@@ -117,8 +117,6 @@ cd it-support-ticket-system
 docker compose up -d --build
 ```
 
-启动后访问：http://localhost:8080/swagger-ui/index.html
-
 **停止服务**：
 
 ```bash
