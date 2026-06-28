@@ -7,7 +7,7 @@ IT 支持人员处理工单以及管理员进行权限管理。
 
 - [项目概述](#项目概述)
 - [核心功能](#核心功能)
-- [典型接口](#典型接口)
+- [主要接口](#主要接口)
 - [技术栈](#技术栈)
 - [系统架构](#系统架构)
 - [项目结构](#项目结构)
@@ -17,11 +17,7 @@ IT 支持人员处理工单以及管理员进行权限管理。
 
 ## 项目概述
 
-企业内部 IT 运维中存在大量设备故障、系统报错等重复性问题。员工需要一种标准化的
-方式提交工单，IT 团队需要跟踪处理进度，管理员需要管控账号权限。
-
-本项目基于一个开源工单骨架进行学习与二次开发，重构了认证授权、角色权限、工单
-状态流转、缓存管理及容器化部署等模块，形成一套完整可运行的后端工单系统。
+开发企业内部 IT 服务工单管理系统，实现员工提交工单、IT 人员处理工单、管理员统一管理用户及权限等业务流程，覆盖工单创建、分配、处理、评论、关闭的完整生命周期，且具备认证授权、权限控制、缓存及容器化部署等能力。
 
 ## 核心功能
 
@@ -36,7 +32,7 @@ IT 支持人员处理工单以及管理员进行权限管理。
 - **Docker 部署**：提供 Dockerfile 和 docker-compose.yml，一条命令启动所有依赖
   服务。
 
-## 典型接口
+## 主要接口
 
 | 方法 | 路径 | 说明 |
 |---|---|---|
@@ -48,17 +44,12 @@ IT 支持人员处理工单以及管理员进行权限管理。
 
 ### 核心行为
 
-- **认证**：登录成功返回 JWT，后续请求通过 `Authorization: Bearer <token>` 传递；登出时将 Token 写入 Redis 黑名单，TTL 为 Token 剩余有效期。
-- **权限**：EMPLOYEE / IT_SUPPORT / ADMIN 三级角色，在 URL、方法、数据三层分别进行权限校验。
-- **查询**：支持分页与动态条件过滤（Specification），查询结果根据当前用户角色自动进行数据权限隔离。
-- **状态流转**：工单遵循 `NEW → ASSIGNED → IN_PROGRESS → RESOLVED → CLOSED` 五态流转，转换规则在 Service 层统一校验，结合当前状态和操作者角色判断合法性，非法流转返回 400。
-- **缓存**：通过 Spring Cache 对查询结果进行缓存，Redis 不可用时自动回源 MySQL。
+- **认证授权**：登录成功返回 JWT，后续请求通过 `Authorization: Bearer <token>` 传递；登出时将 Token 写入 Redis 黑名单，TTL 为 Token 剩余有效期。
+- **数据权限**：EMPLOYEE / IT_SUPPORT / ADMIN 三级角色，在 URL、方法、数据三层分别进行权限校验。
+- **动态查询**：支持分页与动态条件过滤（Specification），查询结果根据当前用户角色自动进行数据权限隔离。
+- **业务规则**：工单遵循 `NEW → ASSIGNED → IN_PROGRESS → RESOLVED → CLOSED` 五态流转，转换规则在 Service 层统一校验，结合当前状态和操作者角色判断合法性，非法流转返回 400。
+- **缓存策略**：通过 Spring Cache 对查询结果进行缓存，Redis 不可用时自动回源 MySQL。
 
-### 更多接口
-
-完整接口定义、请求参数及响应结构请参考 Swagger UI：
-
-http://localhost:8080/swagger-ui/index.html
 
 ## 技术栈
 
@@ -87,7 +78,8 @@ Controller ────── Exception Handler
 Service (FSM / RBAC / Cache)
   │
   ▼
-Repository (JPA + Specification)
+Repository
+(JPA Repository + Specification)
   │
   ├──────────┬──────────┐
   ▼          ▼          ▼
@@ -104,7 +96,7 @@ src/main/java/com/codelogium/ticketing/
 ├── dto/               请求/响应 DTO
 ├── entity/            JPA 实体与枚举
 ├── exception/         异常定义与全局处理
-├── mapper/            Entity ↔ DTO 转换
+├── mapper/            DTO 与 Entity 转换
 ├── repository/        数据访问（含动态查询）
 ├── security/          认证过滤器、JWT、黑名单
 ├── service/           业务逻辑
@@ -114,7 +106,10 @@ src/main/java/com/codelogium/ticketing/
 
 ## 快速启动
 
-**环境要求**：Docker Desktop。
+**环境要求**：
+Docker Engine 24+
+Docker Compose v2
+JDK 17（仅本地开发需要）
 
 ```bash
 git clone https://github.com/nimingFang/it-support-ticket-system.git
