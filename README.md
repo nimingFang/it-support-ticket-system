@@ -3,19 +3,19 @@
 一个面向企业内部 IT 服务场景的后端工单管理系统，用于支持员工提交故障工单、
 IT 支持人员处理工单以及管理员进行权限管理。
 
-## Contents
+## 目录
 
-- Project Overview
-- Features
-- Tech Stack
-- Architecture
-- Project Structure
-- Quick Start
-- Default Accounts
-- API Documentation
-- Roadmap
+- [项目概述](#项目概述)
+- [核心功能](#核心功能)
+- [技术栈](#技术栈)
+- [系统架构](#系统架构)
+- [项目结构](#项目结构)
+- [快速启动](#快速启动)
+- [内置测试账号](#内置测试账号)
+- [接口文档](#接口文档)
+- [后续计划](#后续计划)
 
-## Project Overview
+## 项目概述
 
 企业内部 IT 运维中存在大量设备故障、系统报错等重复性问题。员工需要一种标准化的
 方式提交工单，IT 团队需要跟踪处理进度，管理员需要管控账号权限。
@@ -23,7 +23,7 @@ IT 支持人员处理工单以及管理员进行权限管理。
 本项目基于一个开源工单骨架进行学习与二次开发，重构了认证授权、角色权限、工单
 状态流转、缓存管理及容器化部署等模块，形成一套完整可运行的后端工单系统。
 
-## Features
+## 核心功能
 
 - **JWT 无状态认证**：基于 Spring Security 过滤器链实现登录与 Token 校验，配合
   Redis 黑名单支持主动登出，被拉黑的 Token 在有效期内无法复用。
@@ -36,7 +36,7 @@ IT 支持人员处理工单以及管理员进行权限管理。
 - **Docker 部署**：提供 Dockerfile 和 docker-compose.yml，一条命令启动所有依赖
   服务。
 
-## Tech Stack
+## 技术栈
 
 | 类别 | 技术 |
 |---|---|
@@ -48,7 +48,7 @@ IT 支持人员处理工单以及管理员进行权限管理。
 | 部署 | Docker, Docker Compose |
 | 文档 | Springdoc OpenAPI (Swagger UI) |
 
-## Architecture
+## 系统架构
 
 ```
 Client
@@ -71,7 +71,7 @@ MySQL     Redis      Redis
 (持久化)  (Cache)  (Blacklist)
 ```
 
-## Project Structure
+## 项目结构
 
 ```
 src/main/java/com/codelogium/ticketing/
@@ -88,7 +88,7 @@ src/main/java/com/codelogium/ticketing/
 └── web/               REST 接口
 ```
 
-## Quick Start
+## 快速启动
 
 **环境要求**：Docker Desktop。
 
@@ -107,7 +107,7 @@ docker compose down            # 保留数据
 docker compose down -v         # 清除数据
 ```
 
-## Default Accounts
+## 内置测试账号
 
 | 角色 | 用户名 | 密码 |
 |---|---|---|
@@ -116,16 +116,14 @@ docker compose down -v         # 清除数据
 | IT 支持 | it_li | 123456 |
 | 管理员 | admin | admin123 |
 
-## API Documentation
+## 接口文档
 
 http://localhost:8080/swagger-ui/index.html
 
-## Roadmap
-计划中的改进包括：
+## 后续计划
 
 - 附件上传（MinIO）
 - 操作日志 AOP 重构
 - 工单 Excel 导出
 - GitHub Actions CI
 - 补充更多单元测试覆盖
-
