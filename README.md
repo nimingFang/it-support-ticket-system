@@ -7,12 +7,12 @@ IT 支持人员处理工单以及管理员进行权限管理。
 
 - [项目概述](#项目概述)
 - [核心功能](#核心功能)
+- [典型接口](#典型接口)
 - [技术栈](#技术栈)
 - [系统架构](#系统架构)
 - [项目结构](#项目结构)
 - [快速启动](#快速启动)
 - [内置测试账号](#内置测试账号)
-- [接口文档](#接口文档)
 - [后续计划](#后续计划)
 
 ## 项目概述
@@ -35,6 +35,30 @@ IT 支持人员处理工单以及管理员进行权限管理。
   自动回源数据库，不影响业务。
 - **Docker 部署**：提供 Dockerfile 和 docker-compose.yml，一条命令启动所有依赖
   服务。
+
+## 典型接口
+
+| 方法 | 路径 | 说明 |
+|---|---|---|
+| POST | `/user/authenticate` | 用户登录，返回 JWT |
+| POST | `/tickets` | 创建工单 |
+| GET | `/tickets?page=0&size=10&status=NEW` | 分页查询（支持条件过滤） |
+
+统一响应格式：`{ "code": 200, "message": "success", "data": {...} }`
+
+### 核心行为
+
+- **认证**：登录成功返回 JWT，后续请求通过 `Authorization: Bearer <token>` 传递；登出时将 Token 写入 Redis 黑名单，TTL 为 Token 剩余有效期。
+- **权限**：EMPLOYEE / IT_SUPPORT / ADMIN 三级角色，在 URL、方法、数据三层分别进行权限校验。
+- **查询**：支持分页与动态条件过滤（Specification），查询结果根据当前用户角色自动进行数据权限隔离。
+- **状态流转**：工单遵循 `NEW → ASSIGNED → IN_PROGRESS → RESOLVED → CLOSED` 五态流转，转换规则在 Service 层统一校验，结合当前状态和操作者角色判断合法性，非法流转返回 400。
+- **缓存**：通过 Spring Cache 对查询结果进行缓存，Redis 不可用时自动回源 MySQL。
+
+### 更多接口
+
+完整接口定义、请求参数及响应结构请参考 Swagger UI：
+
+http://localhost:8080/swagger-ui/index.html
 
 ## 技术栈
 
@@ -115,10 +139,6 @@ docker compose down -v         # 清除数据
 | IT 支持 | it_wang | 123456 |
 | IT 支持 | it_li | 123456 |
 | 管理员 | admin | admin123 |
-
-## 接口文档
-
-http://localhost:8080/swagger-ui/index.html
 
 ## 后续计划
 
