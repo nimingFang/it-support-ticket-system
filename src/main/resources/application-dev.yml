@@ -1,0 +1,16 @@
+# 开发环境：连接本地 MySQL 和 Redis
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/it_service_ticket_system?useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&characterEncoding=UTF-8
+    username: root
+    password: root123
+  data:
+    redis:
+      host: localhost
+      port: 6379
+  devtools:
+    restart:
+      enabled: false
+
+jwt:
+  secret: bQeThWmZq4t7w!z$C&F)J@NcRfUjXn2r5u8x/A?D*G-KaPdSgVkYp3s6v9y$B&E)

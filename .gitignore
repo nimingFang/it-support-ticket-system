@@ -1,0 +1,54 @@
+# === 构建产物 ===
+target/
+!.mvn/wrapper/maven-wrapper.jar
+*.jar
+*.war
+*.class
+
+# === IDE ===
+.idea/
+*.iml
+*.iws
+*.ipr
+.vscode/
+.settings/
+.project
+.classpath
+.factorypath
+.springBeans
+.sts4-cache
+.apt_generated
+
+# === 操作系统 ===
+.DS_Store
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# === 敏感配置（绝对不能提交） ===
+*.local.yml
+application-local.yml
+.env
+.env.local
+*.pem
+*.key
+credentials.json
+
+# === 日志与临时文件 ===
+*.log
+*.tmp
+*.swp
+*.bak
+*.orig
+nohup.out
+hs_err_pid*
+
+# === Maven ===
+dependency-reduced-pom.xml
+
+# === Git ===
+.gitattributes
+
+# === 文档草稿 ===
+docs/draft/
+notes/

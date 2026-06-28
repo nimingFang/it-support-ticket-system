@@ -1,0 +1,33 @@
+# IDE
+.idea/
+*.iml
+*.iws
+*.ipr
+.vscode/
+.settings/
+.project
+.classpath
+.factorypath
+
+# Git
+.git/
+.gitattributes
+.gitignore
+
+# Maven
+target/
+!.mvn/wrapper/maven-wrapper.jar
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temp
+*.log
+*.tmp
+*.swp
+
+# Docs (only README needed on GitHub, not in image)
+*.md
+!README.md
+LICENSE
