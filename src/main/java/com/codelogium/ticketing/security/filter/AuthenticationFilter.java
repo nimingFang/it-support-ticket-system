@@ -2,6 +2,7 @@ package com.codelogium.ticketing.security.filter;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -61,8 +62,12 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
                             .map(GrantedAuthority::getAuthority)
                             .collect(Collectors.toList());
 
-        // 使用 JwtUtil 替代硬编码的密钥和过期时间
         String token = jwtUtil.createToken(authResult.getName(), authorities);
+        // 响应头保留（兼容旧客户端）
         response.addHeader(SecurityConstants.AUTHORIZATION, SecurityConstants.BEARER + token);
+        // 响应体：用 ObjectMapper 序列化，与项目 Result<T> 规范一致
+        response.setContentType("application/json;charset=UTF-8");
+        response.getWriter().write(new ObjectMapper().writeValueAsString(
+                Map.of("code", 200, "message", "success", "data", Map.of("token", token))));
     }
 }
