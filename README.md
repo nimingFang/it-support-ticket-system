@@ -117,8 +117,6 @@ cd it-support-ticket-system
 docker compose up -d --build
 ```
 
-启动后访问：http://localhost:8080/swagger-ui/index.html
-
 **运行 React Demo Client**（可选，本地开发环境需要 Node.js）：
 
 ```bash
@@ -127,7 +125,7 @@ npm install
 npm run dev
 ```
 
-访问：http://localhost:5173
+##访问：http://localhost:5173
 
 **停止服务**：
 
