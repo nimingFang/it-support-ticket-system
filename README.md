@@ -36,7 +36,7 @@ IT 支持人员处理工单以及管理员进行权限管理。
 
 | 方法 | 路径 | 说明 |
 |---|---|---|
-| POST | `/user/authenticate` | 用户登录，返回 JWT |
+| POST | `/user/authenticate` | 用户登录，响应体返回 Token |
 | POST | `/tickets` | 创建工单 |
 | GET | `/tickets?page=0&size=10&status=NEW` | 分页查询（支持条件过滤） |
 
@@ -116,6 +116,18 @@ git clone https://github.com/nimingFang/it-support-ticket-system.git
 cd it-support-ticket-system
 docker compose up -d --build
 ```
+
+启动后访问：http://localhost:8080/swagger-ui/index.html
+
+**运行 React Demo Client**（可选，本地开发环境需要 Node.js）：
+
+```bash
+cd react-client
+npm install
+npm run dev
+```
+
+访问：http://localhost:5173
 
 **停止服务**：
 
